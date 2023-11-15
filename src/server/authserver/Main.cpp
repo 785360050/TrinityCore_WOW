@@ -115,7 +115,7 @@ int main(int argc, char** argv)
     sLog->RegisterAppender<AppenderDB>();
     sLog->Initialize(nullptr);
 
-    Trinity::Banner::Show("authserver",
+    Trinity::Banner::Show("authserver",//显示图标
         [](char const* text)
         {
             TC_LOG_INFO("server.authserver", "{}", text);

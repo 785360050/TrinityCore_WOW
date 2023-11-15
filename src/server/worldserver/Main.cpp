@@ -270,9 +270,9 @@ extern int main(int argc, char** argv)
     // Set server offline (not connectable)
     LoginDatabase.DirectPExecute("UPDATE realmlist SET flag = flag | {} WHERE id = '{}'", REALM_FLAG_OFFLINE, realm.Id.Realm);
 
-    LoadRealmInfo(*ioContext);
-
-    sMetric->Initialize(realm.Name, *ioContext, []()
+    LoadRealmInfo(*ioContext);//读取当前区服的IP信息
+    //性能监控初始化
+    sMetric->Initialize(realm.Name, *ioContext, []()  
     {
         TC_METRIC_VALUE("online_players", sWorld->GetPlayerCount());
         TC_METRIC_VALUE("db_queue_login", uint64(LoginDatabase.QueueSize()));
@@ -297,7 +297,7 @@ extern int main(int argc, char** argv)
 
     // Initialize the World
     sSecretMgr->Initialize();
-    sWorld->SetInitialWorldSettings();
+    sWorld->SetInitialWorldSettings();//读取各种从客户端中提取的数据
 
     std::shared_ptr<void> mapManagementHandle(nullptr, [](void*)
     {
@@ -363,13 +363,13 @@ extern int main(int argc, char** argv)
     realm.Flags = RealmFlags(realm.Flags & ~uint32(REALM_FLAG_OFFLINE));
 
     // Start the freeze check callback cycle in 5 seconds (cycle itself is 1 sec)
-    std::shared_ptr<FreezeDetector> freezeDetector;
-    if (int coreStuckTime = sConfigMgr->GetIntDefault("MaxCoreStuckTime", 60))
-    {
-        freezeDetector = std::make_shared<FreezeDetector>(*ioContext, coreStuckTime * 1000);
-        FreezeDetector::Start(freezeDetector);
-        TC_LOG_INFO("server.worldserver", "Starting up anti-freeze thread ({} seconds max stuck time)...", coreStuckTime);
-    }
+    // std::shared_ptr<FreezeDetector> freezeDetector;
+    // if (int coreStuckTime = sConfigMgr->GetIntDefault("MaxCoreStuckTime", 60))
+    // {
+    //     freezeDetector = std::make_shared<FreezeDetector>(*ioContext, coreStuckTime * 1000);
+    //     FreezeDetector::Start(freezeDetector);
+    //     TC_LOG_INFO("server.worldserver", "Starting up anti-freeze thread ({} seconds max stuck time)...", coreStuckTime);
+    // }
 
     TC_LOG_INFO("server.worldserver", "{} (worldserver-daemon) ready...", GitRevision::GetFullVersion());
 

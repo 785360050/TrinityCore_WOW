@@ -134,7 +134,7 @@ void RealmList::UpdateRealms(boost::system::error_code const& error)
                 Field* fields = result->Fetch();
                 uint32 realmId = fields[0].GetUInt32();
                 std::string name = fields[1].GetString();
-                std::string externalAddressString = fields[2].GetString();
+                std::string externalAddressString = fields[2].GetString();//区服所在的IP地址
                 std::string localAddressString = fields[3].GetString();
                 std::string localSubmaskString = fields[4].GetString();
 

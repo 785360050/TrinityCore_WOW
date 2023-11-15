@@ -2150,7 +2150,7 @@ void World::SetInitialWorldSettings()
 
     ///- Initialize MapManager
     TC_LOG_INFO("server.loading", "Starting Map System");
-    sMapMgr->Initialize();
+    sMapMgr->Initialize();//开启一个线程
 
     TC_LOG_INFO("server.loading", "Starting Game Event system...");
     uint32 nextGameEvent = sGameEventMgr->StartSystem();

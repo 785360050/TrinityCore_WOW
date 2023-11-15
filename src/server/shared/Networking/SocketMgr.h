@@ -63,7 +63,7 @@ public:
 
         ASSERT(_threads);
 
-        for (int32 i = 0; i < _threadCount; ++i)
+        for (int32 i = 0; i < _threadCount; ++i)//根据配置数量，开启多个网络线程
             _threads[i].Start();
 
         _acceptor->SetSocketFactory([this]() { return GetSocketForAccept(); });
